@@ -19,7 +19,7 @@ export const razors: Razor[] = [
     price: 120,
     type: 'Adjustable',
     inStock: true,
-    selected: true,
+    selected: false,
   },
   {
     id: '2',
