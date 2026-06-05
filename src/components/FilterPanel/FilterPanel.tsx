@@ -37,7 +37,7 @@ export default function FilterPanel() {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Search razors"
-        className="bg-[#f9f9f8] border-[#e5e5e5] rounded-lg h-[37px] text-[14px] text-[#1a1a1a] placeholder:text-[#6b7280] focus-visible:ring-0 focus-visible:border-[#1a1a1a] transition-colors"
+        className="bg-[#f9f9f8] border-[#e5e5e5] rounded-md h-[37px] text-[14px] text-[#1a1a1a] placeholder:text-[#6b7280] focus-visible:ring-0 focus-visible:border-[#1a1a1a] transition-colors"
       />
 
       {/* Material */}

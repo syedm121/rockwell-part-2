@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import { useRazorStore } from '@/stores/razor-store';
-import { type Razor, type Material, type RazorType } from '@/data/razors';
+import { type Material, type RazorType } from '@/data/razors';
+import RazorCard from '@/components/RazorCard/RazorCard';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+
 } from '@/components/ui/select';
 
 const SORT_LABELS = {
@@ -14,44 +14,6 @@ const SORT_LABELS = {
   'price-asc':  'Price: Low to High',
   'price-desc': 'Price: High to Low',
 } as const;
-
-function RazorCard({ razor }: { razor: Razor }) {
-  const [hovered, setHovered] = useState(false);
-  const toggleSelected = useRazorStore((s) => s.toggleSelected);
-
-  return (
-    <div
-      className="bg-white border border-[#e5e5e5] rounded-xl flex flex-col overflow-hidden cursor-pointer transition-transform duration-200 ease-out"
-      style={{
-        transform:  hovered ? 'scale(1.02)' : 'scale(1)',
-        boxShadow:  hovered ? '0 8px 24px rgba(0,0,0,0.08)' : 'none',
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div className="bg-[#ececeb] h-[150px] w-full shrink-0 rounded-t-xl" />
-
-      <div className="flex flex-col gap-1.5 p-[14px]">
-        <p className="text-[15px] font-semibold text-[#1a1a1a] leading-tight">{razor.name}</p>
-        <p className="text-[13px] text-[#6b7280] leading-tight">{razor.material}</p>
-
-        <div className="flex items-center justify-between pt-1">
-          <p className="text-[16px] font-semibold text-[#1a1a1a] leading-tight">${razor.price}</p>
-          <button
-            onClick={(e) => { e.stopPropagation(); toggleSelected(razor.id); }}
-            className={
-              razor.selected
-                ? 'bg-[#1a1a1a] text-white text-[13px] font-medium px-3 py-2 rounded-lg leading-tight'
-                : 'bg-white border border-[#e5e5e5] text-[#1a1a1a] text-[13px] font-medium px-3 py-2 rounded-lg leading-tight'
-            }
-          >
-            {razor.selected ? '✓ Selected' : 'Select'}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function Results() {
   const razors            = useRazorStore((s) => s.razors);
@@ -76,9 +38,9 @@ export default function Results() {
   if (sortBy === 'price-desc') displayed = [...displayed].sort((a, b) => b.price - a.price);
 
   const activeChips: { label: string; onRemove: () => void }[] = [
-    ...selectedMaterials.map((m) => ({ label: m,          onRemove: () => toggleMaterial(m as Material) })),
-    ...selectedTypes.map((t)     => ({ label: t,          onRemove: () => toggleType(t as RazorType) })),
-    ...(inStockOnly              ? [{ label: 'In stock',  onRemove: () => setInStockOnly(false) }] : []),
+    ...selectedMaterials.map((m) => ({ label: m,         onRemove: () => toggleMaterial(m as Material) })),
+    ...selectedTypes.map((t)     => ({ label: t,         onRemove: () => toggleType(t as RazorType) })),
+    ...(inStockOnly              ? [{ label: 'In stock', onRemove: () => setInStockOnly(false) }] : []),
   ];
 
   return (
@@ -120,7 +82,7 @@ export default function Results() {
         </div>
       )}
 
-      {/* Grid — 2 columns, handles odd count naturally */}
+      {/* Grid */}
       <div className="overflow-y-auto scrollbar-hide flex-1">
         {displayed.length === 0 ? (
           <div className="flex items-center justify-center h-40">
